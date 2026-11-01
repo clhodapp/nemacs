@@ -86,6 +86,27 @@ has activated the packages. A user's own init files are not read.
 state where they normally would. `emacs -q` starts with the packages
 available and without the init.
 
+When the Emacs in `package` has native compilation, the editor runs no
+Lisp of its configuration from source and compiles nothing at run time:
+
+- The packages come native-compiled from nixpkgs, as every package of
+  the Emacs package set does.
+- The init package, `early-init.el` and `init.el` are byte-compiled and
+  native-compiled at build time.
+- Package activation loads a quickstart file, which
+  `package-quickstart-refresh` generates at build time from the editor's
+  packages and which nemacs compiles, instead of each package's
+  autoloads file.
+- A trampoline is compiled at build time for every primitive. Emacs
+  compiles one at run time the first time Lisp advises a primitive, and
+  finds it instead. The trampolines depend on the Emacs alone, so they
+  are built once per Emacs.
+
+The wrapper puts the directories of these `.eln` files on
+`EMACSNATIVELOADPATH`. What still loads as source are files of Emacs
+itself, such as its character tables, and the `subdirs.el` files that
+extend the load path.
+
 ## Use it
 
 On its own, from any flake:
