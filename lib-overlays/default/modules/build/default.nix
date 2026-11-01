@@ -6,6 +6,6 @@
   imports = [
     ./epkgs
     ./initPackage.nix
-    ./package.nix
+    ./package
   ];
 }

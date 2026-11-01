@@ -145,6 +145,16 @@
                   touch $out
                 '';
 
+              # package.el reads the package built with `nemacsBuild` as
+              # it reads one it installed itself: its descriptor, its
+              # requirements, its autoloads.
+              nemacs-package-descriptor = pkgs.runCommand "nemacs-package-descriptor" { } ''
+                export HOME="$TMPDIR"
+                ${lib.getExe standalone.config.build.package} --batch \
+                  -l ${testsSrc}/emacs/descriptor-probe.el
+                touch $out
+              '';
+
               # The Home Manager module installs the editor the settings
               # build, and the whole home configuration evaluates.
               home-manager-module =

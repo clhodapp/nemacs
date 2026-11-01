@@ -21,7 +21,7 @@
     lib.composeManyExtensions (
       [
         (final: _prev: {
-          nemacsBuild = final.callPackage ./nemacsBuild.nix { };
+          nemacsBuild = final.callPackage ./nemacsBuild { };
         })
       ]
       ++ config.overrides
