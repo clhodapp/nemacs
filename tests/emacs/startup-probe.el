@@ -15,6 +15,19 @@
   (cond
    ((not (bound-and-true-p nemacs-test-early-init))
     "FAIL: earlyInit did not run")
+   ((seq-find (lambda (file)
+                (and (stringp file)
+                     (string-match-p "nemacs-init-directory.*\\.el\\'" file)))
+              (mapcar #'car load-history))
+    (format "FAIL: the init directory loaded source: %s"
+            (seq-filter (lambda (file)
+                          (and (stringp file)
+                               (string-match-p "nemacs-init-directory" file)))
+                        (mapcar #'car load-history))))
+   ((and (native-comp-available-p)
+         (not (native-comp-function-p
+               (symbol-function 'nemacs-test-early-function))))
+    "FAIL: the early init ran without native code")
    ((string-prefix-p "/nix/store/" user-emacs-directory)
     (format "FAIL: user-emacs-directory is still in the store: %s" user-emacs-directory))
    ((not (featurep 'nemacs-init))

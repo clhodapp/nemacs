@@ -5,7 +5,12 @@
 # tests/emacs/startup-probe.el reads back from a running editor.
 { lib, ... }:
 {
-  earlyInit = "(defvar nemacs-test-early-init t)";
+  earlyInit = ''
+    (defvar nemacs-test-early-init t)
+    (defun nemacs-test-early-function ()
+      "Defined by the early init, so its code shows how that file loaded."
+      t)
+  '';
 
   # A package kept beside the configuration, built with `nemacsBuild`
   # against a package of the set.
