@@ -24,8 +24,12 @@
 
       The package set carries `nemacsBuild`, the builder for packages
       kept beside a configuration. It byte-compiles with warnings as
-      errors against the package's `packageRequires`, and it generates
-      the autoloads that put the package on the load path.
+      errors against the package's `packageRequires`, and it installs the
+      package as package.el would: with autoloads generated the way
+      `package-generate-autoloads` generates them, and a `-pkg.el` that
+      takes the summary and metadata from the library headers and lists
+      the packages of `packageRequires` as requirements, at the versions
+      they were built at.
     '';
   };
 }
