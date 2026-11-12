@@ -26,12 +26,12 @@ systemd unit, launchers, program pins.
 
 - `lib.nemacs.evalNemacs { pkgs, modules }` evaluates a configuration
   and returns the `evalModules` result.
-- `lib.nemacs.modules` is the list of core modules, for an evaluator
-  that is not `evalNemacs`. The module class is `nemacs`.
+- `modules.nemacs.core` is the core module, for an evaluator that is
+  not `evalNemacs`. The module class is `nemacs`.
 - `modules.homeManager.nemacs` and `modules.nixos.nemacs` declare
   `programs.nemacs.{enable,settings}`.
 
 The evaluator depends on nixpkgs alone. caisson builds the outputs and
 the checks of this flake. A caisson integration for the `nemacs` class
-would map onto `lib.nemacs.modules` the way caisson's nvf integration
+would map onto `modules.nemacs.core` the way caisson's nvf integration
 maps onto the module list of nvf.

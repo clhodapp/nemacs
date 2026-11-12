@@ -145,7 +145,7 @@ installed while `enable` is set. The settings are evaluated whether or
 not `enable` is set, so another module can read what they build.
 
 A framework that evaluates nemacs modules itself imports
-`nemacs.lib.nemacs.modules`, the core modules, and supplies `pkgs` as a
+`nemacs.modules.nemacs.core`, the core module, and supplies `pkgs` as a
 module argument, under the module class `nemacs`.
 
 ## Development

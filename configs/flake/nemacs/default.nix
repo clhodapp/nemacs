@@ -16,6 +16,7 @@
   caisson.modules = {
     homeManager.exported = modules: { inherit (modules) nemacs; };
     nixos.exported = modules: { inherit (modules) nemacs; };
+    nemacs.exported = modules: { inherit (modules) core; };
   };
 
   partitionedAttrs.checks = "checks";

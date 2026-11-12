@@ -21,7 +21,8 @@ in
     settings = lib.mkOption {
       type = lib.types.submoduleWith {
         class = "nemacs";
-        modules = closure-lib.nemacs.modules ++ [
+        modules = [
+          closure-lib.caisson.modules.nemacs.core
           {
             key = "nemacs.nixos.pkgs";
             _module.args.pkgs = lib.mkDefault pkgs;
