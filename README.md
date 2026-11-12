@@ -3,7 +3,7 @@
 An Emacs configured through the Nix module system. A nemacs
 configuration is a set of modules; evaluating them builds an editor:
 Emacs, the packages the configuration needs, and its init compiled
-into a package of its own.
+into a separate package.
 
 ## A configuration
 
@@ -80,7 +80,7 @@ Packages kept beside the configuration go into the package set through
 `build.package` holds Emacs and every package the configuration needs.
 Its `emacs` starts on an init directory in the store: `early-init.el`
 holds `earlyInit`, and `init.el` requires `nemacs-init` once startup
-has activated the packages. A user's own init files are not read.
+has activated the packages. The init files of the user are not read.
 `user-emacs-directory` is moved back to `$XDG_CONFIG_HOME/emacs/` (or
 `~/.emacs.d/`) before anything else runs, so packages still keep their
 state where they normally would. `emacs -q` starts with the packages
@@ -109,7 +109,7 @@ extend the load path.
 
 ## Use it
 
-On its own, from any flake:
+Without a framework, from any flake:
 
 ```nix
 {
@@ -138,7 +138,7 @@ In a Home Manager configuration, import `nemacs.modules.homeManager.nemacs`:
 }
 ```
 
-`nemacs.modules.nixos.nemacs` is the same for a NixOS machine. Either
+`nemacs.modules.nixos.nemacs` is the same for a NixOS configuration. Either
 way, `programs.nemacs.settings` is evaluated as nemacs modules on the
 package set of the configuration around it, and its `build.package` is
 installed while `enable` is set. The settings are evaluated whether or

@@ -2,7 +2,7 @@
 #
 # A nemacs configuration inside a NixOS configuration:
 # `programs.nemacs.settings` is evaluated as nemacs modules, on the
-# package set of the machine, and the editor it builds is installed
+# package set of the NixOS configuration, and the editor it builds is installed
 # into the system profile.
 { closure-lib, ... }:
 {

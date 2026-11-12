@@ -10,9 +10,9 @@ treefmt-nix) are pinned by `tests/dependencies/flake.lock`.
 | `nemacs` | The fixture configuration (`tests/fixture`) builds. |
 | `nemacs-startup` | A daemon started from that editor ran `earlyInit`, moved `user-emacs-directory` out of the store, loaded `nemacs-init`, ran the bundles in order, and loaded the package built with `nemacsBuild`. Where native compilation is available, it also loaded no startup file or package autoloads from source, activated the packages through the quickstart file, ran the early init and the packages as native code, and installed a trampoline for an advised primitive without compiling one. `tests/emacs/startup-probe.el` reads each trace back. |
 | `nemacs-init-order` | The init is joined by bundle order, then bundle name, with `lib.mkAfter` on `init` after every bundle and a disabled bundle absent. |
-| `home-manager-module` | The Home Manager module installs the editor its settings build, and the home configuration builds. |
+| `home-manager-module` | The Home Manager module installs the editor its settings build, and the home-manager configuration builds. |
 | `nixos-module` | The NixOS module installs the editor its settings build. |
-| `treefmt` | The tree is formatted. |
+| `treefmt` | The files of the repository are formatted. |
 
 The fixture's disabled bundle throws from its package function, so a
 regression that reads the packages of a disabled bundle fails

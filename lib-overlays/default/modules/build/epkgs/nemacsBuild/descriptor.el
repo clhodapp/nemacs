@@ -5,7 +5,7 @@
 
 ;; Usage: emacs --batch -l descriptor.el PKG-DIR NAME VERSION [DEP-DIR...]
 ;;
-;; Writes NAME-pkg.el into PKG-DIR with package.el's own writer, so the
+;; Writes NAME-pkg.el into PKG-DIR with the writer of package.el, so the
 ;; package carries the descriptor package.el would have installed.  The
 ;; summary and the other metadata come from the library headers of
 ;; NAME.el when it has them; the summary falls back to the one on its

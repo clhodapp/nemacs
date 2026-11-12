@@ -139,8 +139,8 @@ in
       for bin in "$out/bin/emacs" "$out/bin/emacs-${version}"; do
         if [ -e "$bin" ]; then
           rm "$bin"
-          # The wrapper of `emacsWithPackages` adds the packages' own
-          # native-lisp tree at an empty element of EMACSNATIVELOADPATH,
+          # The wrapper of `emacsWithPackages` adds the native-lisp
+          # directory of the packages at an empty element of EMACSNATIVELOADPATH,
           # or alone when the variable is unset, so the value keeps an
           # empty element after these two directories. `--prefix` would
           # trim it.

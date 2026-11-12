@@ -81,12 +81,12 @@
               ];
             };
 
-            home = inputs.home-manager.lib.homeManagerConfiguration {
+            homeManagerConfiguration = inputs.home-manager.lib.homeManagerConfiguration {
               inherit pkgs;
               modules = [
                 self.modules.homeManager.nemacs
                 {
-                  key = "nemacs.checks.home";
+                  key = "nemacs.checks.homeManagerConfiguration";
                   home.username = "tester";
                   home.homeDirectory = "/home/tester";
                   home.stateVersion = "25.05";
@@ -96,11 +96,11 @@
               ];
             };
 
-            machine = inputs.nixpkgs.lib.nixosSystem {
+            nixosConfiguration = inputs.nixpkgs.lib.nixosSystem {
               modules = [
                 self.modules.nixos.nemacs
                 {
-                  key = "nemacs.checks.machine";
+                  key = "nemacs.checks.nixosConfiguration";
                   nixpkgs.pkgs = pkgs;
                   boot.loader.grub.enable = false;
                   fileSystems."/" = {
@@ -156,19 +156,21 @@
               '';
 
               # The Home Manager module installs the editor the settings
-              # build, and the whole home configuration evaluates.
+              # build, and the whole home-manager configuration evaluates.
               home-manager-module =
-                assert lib.elem home.config.programs.nemacs.settings.build.package home.config.home.packages;
-                home.activationPackage;
+                assert lib.elem homeManagerConfiguration.config.programs.nemacs.settings.build.package
+                  homeManagerConfiguration.config.home.packages;
+                homeManagerConfiguration.activationPackage;
 
               # The NixOS module installs the editor the settings build.
-              # Only the package list is forced: building the machine
-              # would build a whole system for one assertion.
+              # Only the package list is forced: building the NixOS
+              # configuration would build a whole system for a single
+              # assertion.
               nixos-module =
                 let
-                  editor = machine.config.programs.nemacs.settings.build.package;
+                  editor = nixosConfiguration.config.programs.nemacs.settings.build.package;
                 in
-                assert lib.elem editor machine.config.environment.systemPackages;
+                assert lib.elem editor nixosConfiguration.config.environment.systemPackages;
                 pkgs.runCommand "nixos-module" { } ''
                   test -x ${editor}/bin/emacs
                   touch $out

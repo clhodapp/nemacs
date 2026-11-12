@@ -13,7 +13,7 @@
     nemacs = (prev.nemacs or { }) // {
       # The modules every nemacs evaluation starts from, as paths. A
       # caller that evaluates nemacs modules by other means (a submodule
-      # of a Home Manager or NixOS option, a framework's own evaluator)
+      # of a Home Manager or NixOS option, the evaluator of a framework)
       # imports this list and supplies `pkgs` as a module argument.
       modules = import ./modules;
 

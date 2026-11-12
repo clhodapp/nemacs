@@ -43,8 +43,8 @@ trivialBuild (
       dependencyPackageDirs=()
       ${collectDependencies}
       # The header is the form `package-generate-autoloads` gives
-      # `loaddefs-generate`: activating the package puts its own
-      # directory on load-path, or (require 'this-package) from a
+      # `loaddefs-generate`: activating the package puts the directory
+      # of the package on load-path, or (require 'this-package) from a
       # dependent package finds nothing.
       emacs $lispLoadFlags -L . --batch \
         --eval "(loaddefs-generate \".\" \"${args.pname}-autoloads.el\" nil (prin1-to-string '(add-to-list 'load-path (or (and load-file-name (directory-file-name (file-name-directory load-file-name))) (car load-path)))))"

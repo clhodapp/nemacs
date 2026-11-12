@@ -12,8 +12,8 @@
 
 (defun nemacs-test--source-loads ()
   "Files startup loaded as Lisp source that nemacs compiles ahead of time.
-Emacs's own data files and the `subdirs.el' files that extend the load
-path are loaded as source by Emacs itself and are not counted."
+The data files of Emacs and the `subdirs.el' files that extend the load
+path are loaded as source by Emacs and are not counted."
   (seq-filter (lambda (file)
                 (and (stringp file)
                      (string-match-p "\\.el\\'" file)
