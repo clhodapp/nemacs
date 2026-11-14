@@ -52,6 +52,7 @@
         pkgSets = lib: lib.caisson.nixpkgs.mkConfigurations { };
 
         libOverlays = lib: lib.caisson.mkLibOverlays ./lib-overlays;
+        pkgOverlays = lib: lib.caisson.mkPkgOverlays ./pkg-overlays;
       };
     in
     lib.caisson.flake-parts.mkTopConfiguration { };
