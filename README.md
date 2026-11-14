@@ -175,7 +175,7 @@ Arguments after `--` go to `nix`. The `--flake` option takes
 starts it as a daemon and reads back what each of its options left in
 the running editor, checks the order the init is joined in, evaluates
 the Home Manager and NixOS modules, and runs the `nemacs` command
-against stand-ins for `nix` and `nix-env`. `nix fmt` formats.
+against a stand-in for `nix`. `nix fmt` formats.
 
 ## License
 

@@ -21,7 +21,7 @@ Options:
                            (default: result).
   -h, --help               Print this text.
 
-Arguments after `--` are passed to `nix build` and `nix eval`.
+Arguments after `--` are passed to every `nix` command it runs.
 EOF
 }
 
@@ -108,9 +108,9 @@ switch)
   "$activation/activate"
   ;;
 generations)
-  nix-env --profile "$(profile_path)" --list-generations
+  nix profile history --profile "$(profile_path)" "${nix_args[@]}"
   ;;
 rollback)
-  nix-env --profile "$(profile_path)" --rollback
+  nix profile rollback --profile "$(profile_path)" "${nix_args[@]}"
   ;;
 esac

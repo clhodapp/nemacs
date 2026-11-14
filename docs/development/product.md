@@ -35,8 +35,8 @@ systemd unit, launchers, program pins.
 - `packages.<system>.nemacs` is the `nemacs` command, with the verbs
   `build`, `switch`, `generations` and `rollback`. It reads
   `nemacsConfigurations.<system>.<name>` of a flake, for which it uses
-  `activationPackage` and `profile.path`, and runs the `nix` and
-  `nix-env` on the PATH.
+  `activationPackage` and `profile.path`, and runs the `nix` on the
+  PATH.
 
 The evaluator depends on nixpkgs alone. caisson builds the outputs and
 the checks of this flake. The caisson integration for the `nemacs`

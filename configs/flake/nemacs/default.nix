@@ -189,10 +189,9 @@
                   touch $out
                 '';
 
-              # The `nemacs` command calls `nix` and `nix-env` as it
-              # should. Stand-ins for the two record their arguments,
-              # and the activation package they hand back records that
-              # its `activate` ran.
+              # The `nemacs` command calls `nix` as it should. A stand-in
+              # for `nix` records its arguments, and the activation
+              # package it hands back records that its `activate` ran.
               nemacs-cli =
                 pkgs.runCommand "nemacs-cli"
                   {
@@ -228,12 +227,7 @@
                     esac
                     EOF
 
-                    cat > "$TMPDIR/bin/nix-env" <<'EOF'
-                    #!/bin/sh
-                    echo "nix-env $*" >> "$LOG"
-                    EOF
-
-                    chmod +x "$ACTIVATION/activate" "$TMPDIR/bin/nix" "$TMPDIR/bin/nix-env"
+                    chmod +x "$ACTIVATION/activate" "$TMPDIR/bin/nix"
                     export PATH="$TMPDIR/bin:$PATH"
 
                     nemacs build --flake ./cfg#editor --out-link out
@@ -258,10 +252,10 @@
                     activate
                     nix eval --impure --raw --expr builtins.currentSystem
                     nix eval --raw .#nemacsConfigurations.x86_64-linux."editor".profile.path
-                    nix-env --profile $HOME/.local/state/caisson/profiles/nemacs/editor --list-generations
+                    nix profile history --profile $HOME/.local/state/caisson/profiles/nemacs/editor
                     nix eval --impure --raw --expr builtins.currentSystem
                     nix eval --raw .#nemacsConfigurations.x86_64-linux."editor".profile.path
-                    nix-env --profile $HOME/.local/state/caisson/profiles/nemacs/editor --rollback
+                    nix profile rollback --profile $HOME/.local/state/caisson/profiles/nemacs/editor
                     nix eval --impure --raw --expr builtins.currentSystem
                     nix build .#nemacsConfigurations.x86_64-linux."default".activationPackage --out-link result
                     nix eval --impure --raw --expr builtins.currentSystem --option cores 1
