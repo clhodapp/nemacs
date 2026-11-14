@@ -16,7 +16,9 @@ editor:
 - the build: the package set with the overlays applied, the init
   compiled into `nemacs-init`, and the wrapped editor;
 - `nemacsBuild`, the builder for packages kept beside a configuration;
-- the evaluator `evalNemacs` and the Home Manager and NixOS modules.
+- the evaluator `evalNemacs` and the Home Manager and NixOS modules;
+- the `nemacs` command, which builds and activates a configuration that
+  a flake publishes as `nemacsConfigurations`.
 
 Anything a particular configuration decides stays in that
 configuration: which packages, which init, fonts, a daemon and its
@@ -30,8 +32,14 @@ systemd unit, launchers, program pins.
   not `evalNemacs`. The module class is `nemacs`.
 - `modules.homeManager.nemacs` and `modules.nixos.nemacs` declare
   `programs.nemacs.{enable,settings}`.
+- `packages.<system>.nemacs` is the `nemacs` command, with the verbs
+  `build`, `switch`, `generations` and `rollback`. It reads
+  `nemacsConfigurations.<system>.<name>` of a flake, for which it uses
+  `activationPackage` and `profile.path`, and runs the `nix` and
+  `nix-env` on the PATH.
 
 The evaluator depends on nixpkgs alone. caisson builds the outputs and
-the checks of this flake. A caisson integration for the `nemacs` class
-would map onto `modules.nemacs.core` the way caisson's nvf integration
-maps onto the module list of nvf.
+the checks of this flake. The caisson integration for the `nemacs`
+class maps onto `modules.nemacs.core` the way the nvf integration of
+caisson maps onto the module list of nvf, and it publishes
+`nemacsConfigurations`.

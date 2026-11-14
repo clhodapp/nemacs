@@ -12,6 +12,7 @@ treefmt-nix) are pinned by `tests/dependencies/flake.lock`.
 | `nemacs-init-order` | The init is joined by bundle order, then bundle name, with `lib.mkAfter` on `init` after every bundle and a disabled bundle absent. |
 | `home-manager-module` | The Home Manager module installs the editor its settings build, and the home-manager configuration builds. |
 | `nixos-module` | The NixOS module installs the editor its settings build. |
+| `nemacs-cli` | The `nemacs` command builds, switches, lists generations and rolls back with the `nix` and `nix-env` calls it should make, passes arguments after `--` on, and refuses an unknown command and a missing one with the exit codes 1 and 2. Stand-ins for `nix` and `nix-env` record their arguments. |
 | `treefmt` | The files of the repository are formatted. |
 
 The fixture's disabled bundle throws from its package function, so a

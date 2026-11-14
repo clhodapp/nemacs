@@ -148,12 +148,34 @@ A framework that evaluates nemacs modules itself imports
 `nemacs.modules.nemacs.core`, the core module, and supplies `pkgs` as a
 module argument, under the module class `nemacs`.
 
+### Switch the editor on its own
+
+A flake built with [caisson](https://github.com/nix-caisson/caisson)
+declares a nemacs configuration with the `nemacs` integration of
+caisson, under `caisson.nemacs.configurations.<name>`, and publishes it
+as `nemacsConfigurations.<system>.<name>`. The `nemacs` command of this
+flake builds and activates such a configuration, like `home-manager`
+does for a home:
+
+```sh
+nix run github:clhodapp/nemacs -- switch --flake .#editor
+```
+
+`switch` points a Nix profile of its own at the editor and changes
+nothing else, so updating the editor does not activate a whole home.
+The other commands are `build`, which links the activation package at
+`--out-link`, `generations`, which lists the generations of the
+profile, and `rollback`, which makes the previous generation current.
+Arguments after `--` go to `nix`. The `--flake` option takes
+`REF#NAME` and defaults to `.` and `default`.
+
 ## Development
 
 `nix flake check` builds a fixture configuration (`tests/fixture`),
 starts it as a daemon and reads back what each of its options left in
-the running editor, checks the order the init is joined in, and
-evaluates the Home Manager and NixOS modules. `nix fmt` formats.
+the running editor, checks the order the init is joined in, evaluates
+the Home Manager and NixOS modules, and runs the `nemacs` command
+against stand-ins for `nix` and `nix-env`. `nix fmt` formats.
 
 ## License
 
