@@ -13,6 +13,18 @@
 
   caisson.libOverlays.exported = libOverlays: { inherit (libOverlays) default; };
 
+  # The `nemacs` command is the `default` entry of this flake's package
+  # overlay registry (pkg-overlays/, registered on mkLib): the package
+  # set applies it by default, and the flake exports it as `pkgOverlays`,
+  # as the plain `overlays.default` and as `packages.<system>.nemacs`.
+  caisson.nixpkgs.packages.export.enabled = true;
+
+  perSystem =
+    { config, ... }:
+    {
+      packages.default = config.packages.nemacs;
+    };
+
   caisson.modules = {
     homeManager.exported = modules: { inherit (modules) nemacs; };
     nixos.exported = modules: { inherit (modules) nemacs; };

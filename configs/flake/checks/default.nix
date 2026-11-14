@@ -181,6 +181,86 @@
           category = "build";
           description = "the NixOS module installs the editor the settings build";
         };
+
+        # A stand-in for `nix` records its arguments, and the activation
+        # package it hands back records that its `activate` ran.
+        nemacs-cli = {
+          derivation =
+            pkgs.runCommand "nemacs-cli"
+              {
+                nativeBuildInputs = [ pkgs.nemacs.nemacs ];
+              }
+              ''
+                export HOME="$TMPDIR/home"
+                export LOG="$TMPDIR/log"
+                export ACTIVATION="$TMPDIR/activation"
+                mkdir -p "$HOME" "$TMPDIR/bin" "$ACTIVATION"
+                : > "$LOG"
+
+                cat > "$ACTIVATION/activate" <<'EOF'
+                #!/bin/sh
+                echo activate >> "$LOG"
+                EOF
+
+                cat > "$TMPDIR/bin/nix" <<'EOF'
+                #!/bin/sh
+                echo "nix $*" >> "$LOG"
+                case "$1" in
+                eval)
+                  case "$*" in
+                  *currentSystem*) echo x86_64-linux ;;
+                  *profile.path*) printf '%s' '$HOME/.local/state/caisson/profiles/nemacs/editor' ;;
+                  esac
+                  ;;
+                build)
+                  case "$*" in
+                  *--print-out-paths*) echo "$ACTIVATION" ;;
+                  esac
+                  ;;
+                esac
+                EOF
+
+                chmod +x "$ACTIVATION/activate" "$TMPDIR/bin/nix"
+                export PATH="$TMPDIR/bin:$PATH"
+
+                nemacs build --flake ./cfg#editor --out-link out
+                nemacs switch -f .#editor
+                nemacs generations -f .#editor
+                nemacs rollback -f .#editor
+                nemacs build
+                nemacs switch -- --option cores 1
+
+                status=0
+                nemacs bogus 2>/dev/null || status=$?
+                [ "$status" = 1 ]
+                status=0
+                nemacs 2>/dev/null || status=$?
+                [ "$status" = 2 ]
+
+                cat > "$TMPDIR/expected" <<EOF
+                nix eval --impure --raw --expr builtins.currentSystem
+                nix build ./cfg#nemacsConfigurations.x86_64-linux."editor".activationPackage --out-link out
+                nix eval --impure --raw --expr builtins.currentSystem
+                nix build .#nemacsConfigurations.x86_64-linux."editor".activationPackage --no-link --print-out-paths
+                activate
+                nix eval --impure --raw --expr builtins.currentSystem
+                nix eval --raw .#nemacsConfigurations.x86_64-linux."editor".profile.path
+                nix profile history --profile $HOME/.local/state/caisson/profiles/nemacs/editor
+                nix eval --impure --raw --expr builtins.currentSystem
+                nix eval --raw .#nemacsConfigurations.x86_64-linux."editor".profile.path
+                nix profile rollback --profile $HOME/.local/state/caisson/profiles/nemacs/editor
+                nix eval --impure --raw --expr builtins.currentSystem
+                nix build .#nemacsConfigurations.x86_64-linux."default".activationPackage --out-link result
+                nix eval --impure --raw --expr builtins.currentSystem --option cores 1
+                nix build .#nemacsConfigurations.x86_64-linux."default".activationPackage --no-link --print-out-paths --option cores 1
+                activate
+                EOF
+                diff -u "$TMPDIR/expected" "$LOG"
+                touch $out
+              '';
+          category = "unit";
+          description = "the `nemacs` command makes the `nix` calls it should, passes arguments after `--` on, and refuses an unknown command and a missing one with the exit codes 1 and 2";
+        };
       };
     };
 }
