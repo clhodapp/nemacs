@@ -63,6 +63,17 @@
         ];
       };
 
+      withFonts = closure-lib.nemacs.evalNemacs {
+        inherit pkgs;
+        modules = [
+          fixtureSettings
+          {
+            key = "nemacs.checks.fonts";
+            fonts = [ pkgs.dejavu_fonts ];
+          }
+        ];
+      };
+
       homeManagerConfiguration = inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
@@ -119,6 +130,23 @@
             pkgs.runCommand "nemacs-init-order" { } "touch $out";
           category = "eval";
           description = "bundles of equal order follow in name order, a lower order comes first, and `mkAfter` on `init` comes last";
+        };
+
+        nemacs-fonts = {
+          derivation =
+            let
+              editor = withFonts.config.build.package;
+              plain = standalone.config.build.package;
+            in
+            pkgs.runCommand "nemacs-fonts" { } ''
+              # The editor holds the font files of the package in `fonts`.
+              test -e ${editor}/share/fonts/truetype/DejaVuSans.ttf
+              # An editor with no `fonts` holds no font file.
+              test -z "$(find -L ${plain}/share/fonts -type f 2>/dev/null)"
+              touch $out
+            '';
+          category = "build";
+          description = "the editor holds the font files of the packages in `fonts` under `share/fonts`, and an editor with no `fonts` holds none";
         };
 
         # The probe expression must stay free of single quotes for the

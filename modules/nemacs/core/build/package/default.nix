@@ -84,6 +84,15 @@ let
         fi
       '';
 
+  # The `share/fonts` directory of each font package and nothing else
+  # of them, so the editor holds the fonts it names and no program or
+  # data file of a font package.
+  fonts = pkgs.buildEnv {
+    name = "nemacs-fonts-${version}";
+    paths = config.fonts;
+    pathsToLink = [ "/share/fonts" ];
+  };
+
   # A trampoline for every primitive, compiled ahead of time
   # (./trampolines.el says why). Trampolines depend on the Emacs alone,
   # so this is built once per `package` and shared by every
@@ -127,13 +136,17 @@ in
       otherwise compile at run time the first time Lisp advises that
       primitive. Their `.eln` directories are added to
       `EMACSNATIVELOADPATH`. The other binaries of `package`,
-      `emacsclient` among them, are carried as they are.
+      `emacsclient` among them, are carried as they are. The `fonts`
+      are under `share/fonts`.
     '';
   };
 
   config.build.package = pkgs.symlinkJoin {
     name = "nemacs-${version}";
-    paths = [ emacsWithPackages ];
+    paths = [
+      emacsWithPackages
+      fonts
+    ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       for bin in "$out/bin/emacs" "$out/bin/emacs-${version}"; do

@@ -37,6 +37,7 @@ The options:
 | `bundles.<name>` | `enable`, `init`, `packages`, and `order`, which places the bundle's init. |
 | `init` | The init. Bundles contribute here; a direct definition can too. |
 | `packages` | The packages the init requires, as a function of the package set. |
+| `fonts` | The font packages the init names. The editor holds their `share/fonts` directories, so a profile that points at the editor carries the fonts. |
 | `overrides` | Overlays on the Emacs package set, all sharing one fixed point. |
 | `earlyInit` | The contents of `early-init.el`. |
 | `build.epkgs` | The package set with every overlay applied (read-only). |
