@@ -74,6 +74,17 @@
         ];
       };
 
+      withExtraPaths = closure-lib.nemacs.evalNemacs {
+        inherit pkgs;
+        modules = [
+          fixtureSettings
+          {
+            key = "nemacs.checks.extra-paths";
+            extraPaths = [ (pkgs.writeShellScriptBin "nemacs-test-launcher" "exit 0") ];
+          }
+        ];
+      };
+
       homeManagerConfiguration = inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
@@ -147,6 +158,23 @@
             '';
           category = "build";
           description = "the editor holds the font files of the packages in `fonts` under `share/fonts`, and an editor with no `fonts` holds none";
+        };
+
+        nemacs-extra-paths = {
+          derivation =
+            let
+              editor = withExtraPaths.config.build.package;
+              plain = standalone.config.build.package;
+            in
+            pkgs.runCommand "nemacs-extra-paths" { } ''
+              # The editor holds the program of the package in `extraPaths`.
+              test -x ${editor}/bin/nemacs-test-launcher
+              # An editor with no `extraPaths` holds no such program.
+              test ! -e ${plain}/bin/nemacs-test-launcher
+              touch $out
+            '';
+          category = "build";
+          description = "the editor holds the files of the packages in `extraPaths`, and an editor with no `extraPaths` holds none of them";
         };
 
         # The probe expression must stay free of single quotes for the
