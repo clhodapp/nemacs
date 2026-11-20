@@ -1,7 +1,7 @@
 # nemacs: testing
 
 All checks run under `nix flake check` from the repository root. They
-live in the `checks` partition of `configs/flake/nemacs/default.nix`,
+live in the `checks` partition of `configs/flake-parts/nemacs/default.nix`,
 whose extra inputs (Home Manager, nixpkgs for the NixOS evaluation,
 treefmt-nix) are pinned by `tests/dependencies/flake.lock`.
 
