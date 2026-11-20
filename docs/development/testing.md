@@ -11,6 +11,7 @@ treefmt-nix) are pinned by `tests/dependencies/flake.lock`.
 | `nemacs-startup` | A daemon started from that editor ran `earlyInit`, moved `user-emacs-directory` out of the store, loaded `nemacs-init`, ran the bundles in order, and loaded the package built with `nemacsBuild`. Where native compilation is available, it also loaded no startup file or package autoloads from source, activated the packages through the quickstart file, ran the early init and the packages as native code, and installed a trampoline for an advised primitive without compiling one. `tests/emacs/startup-probe.el` reads each trace back. |
 | `nemacs-init-order` | The init is joined by bundle order, then bundle name, with `lib.mkAfter` on `init` after every bundle and a disabled bundle absent. |
 | `nemacs-fonts` | The editor holds the font files of the packages in `fonts` under `share/fonts`, and an editor with no `fonts` holds none. |
+| `nemacs-extra-paths` | The editor holds the files of the packages in `extraPaths`, and an editor with no `extraPaths` holds none of them. |
 | `home-manager-module` | The Home Manager module installs the editor its settings build, and the home-manager configuration builds. |
 | `nixos-module` | The NixOS module installs the editor its settings build. |
 | `nemacs-cli` | The `nemacs` command builds, switches, lists generations and rolls back with the `nix` calls it should make, passes arguments after `--` on, and refuses an unknown command and a missing one with the exit codes 1 and 2. A stand-in for `nix` records its arguments. |

@@ -10,6 +10,7 @@
     ./overrides.nix
     ./packages.nix
     ./fonts.nix
+    ./extraPaths.nix
     ./init.nix
     ./earlyInit.nix
     ./bundles

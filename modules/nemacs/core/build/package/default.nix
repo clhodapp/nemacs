@@ -137,7 +137,8 @@ in
       primitive. Their `.eln` directories are added to
       `EMACSNATIVELOADPATH`. The other binaries of `package`,
       `emacsclient` among them, are carried as they are. The `fonts`
-      are under `share/fonts`.
+      are under `share/fonts`, and the files of each of `extraPaths` are
+      carried as they are.
     '';
   };
 
@@ -146,7 +147,8 @@ in
     paths = [
       emacsWithPackages
       fonts
-    ];
+    ]
+    ++ config.extraPaths;
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       for bin in "$out/bin/emacs" "$out/bin/emacs-${version}"; do

@@ -12,7 +12,7 @@ nemacs owns what every configuration needs in order to become an
 editor:
 
 - the options a configuration is written in (`package`, `bundles`,
-  `init`, `packages`, `fonts`, `overrides`, `earlyInit`);
+  `init`, `packages`, `fonts`, `extraPaths`, `overrides`, `earlyInit`);
 - the build: the package set with the overlays applied, the init
   compiled into `nemacs-init`, and the wrapped editor;
 - `nemacsBuild`, the builder for packages kept beside a configuration;
